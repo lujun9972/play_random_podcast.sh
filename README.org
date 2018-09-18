@@ -1,0 +1,19 @@
+#+TITLE: README
+#+AUTHOR: lujun9972
+#+TAGS: play_random_podcast.sh
+#+DATE: [2018-09-18 二 22:09]
+#+LANGUAGE:  zh-CN
+#+OPTIONS:  H:6 num:nil toc:t \n:nil ::t |:t ^:nil -:nil f:t *:t <:nil
+
+随机播放播客
+
+* Requirememt
++ curl
++ mpg123
+
+* Usage
+#+BEGIN_SRC shell
+  play_random_podcast.sh [-c] podcast_feed
+#+END_SRC
+
+其中 =-c= 表示缓存podcast中的mp3文件，会保存mp3文件到脚本所在目录中的 =podcasts/博客域名/= 下
