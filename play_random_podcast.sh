@@ -5,7 +5,7 @@ while getopts :cs: OPT; do
             cached="True"
             ;;
         s|+s)
-            sotre_directory="$OPTARG"
+            store_directory="$OPTARG"
             ;;
         *)
             echo "usage: ${0##*/} [-c][-s STORE_DIRECTORY] [--] PODCAST_FEED"
