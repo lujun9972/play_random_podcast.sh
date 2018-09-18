@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-
-while getopts :c OPT; do
+while getopts :cs: OPT; do
     case $OPT in
         c|+c)
             cached="True"
             ;;
+        s|+s)
+            sotre_directory="$OPTARG"
+            ;;
         *)
-            echo "usage: ${0##*/} [+-c} [--] podcast_feed..."
+            echo "usage: ${0##*/} [-c][-s STORE_DIRECTORY] [--] PODCAST_FEED"
             exit 2
     esac
 done
@@ -17,10 +19,12 @@ podcast_feed=$1
 random_enclosure=$(curl ${podcast_feed}|grep -i enclosure|grep -E -o "https*.*mp3" |shuf|head -n 1)
 # 缓存mp3
 if [[ -n ${cached} ]];then
-    cd $(dirname $0)
     podcast=$(echo ${podcast_feed}|sed 's#^https*://\([^/]*\).*$#\1#')
-    mkdir -p podcasts/${podcast}
-    cd podcasts/${podcast}
+    if [[ -z ${store_directory} ]];then
+        store_directory=$(dirname $0)/podcasts/${podcast}
+    fi
+    mkdir -p ${store_directory}
+    cd ${store_directory}
     enclosure_file=$(basename ${random_enclosure})
     if [[ ! -f ${enclosure_file} ]];then
         wget ${random_enclosure}

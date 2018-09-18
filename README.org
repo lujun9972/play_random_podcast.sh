@@ -13,7 +13,9 @@
 
 * Usage
 #+BEGIN_SRC shell
-  play_random_podcast.sh [-c] podcast_feed
+  play_random_podcast.sh [-c][-s STORE_DIRECTORY] [--] PODCAST_FEED
 #+END_SRC
 
-其中 =-c= 表示缓存podcast中的mp3文件，会保存mp3文件到脚本所在目录中的 =podcasts/博客域名/= 下
+其中 =-c= 表示缓存podcast中的mp3文件，会保存mp3文件到存储目录中
+
+可以使用 =-s STORE_DIRECTORY= 来指定存储目录的地址，默认为脚本所在目录中的 =podcasts/博客域名/=
