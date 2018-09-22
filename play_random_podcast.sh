@@ -32,7 +32,7 @@ if [[ -n ${cached} ]];then
     cd ${store_directory}
     enclosure_file=$(basename ${random_enclosure})
     if [[ ! -f ${enclosure_file} ]];then
-        wget ${random_enclosure}
+        wget ${random_enclosure} -O ${enclosure_file}
     fi
     # 播放mp3文件
     $player "${enclosure_file}"
