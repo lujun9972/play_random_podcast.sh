@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 while getopts :cs: OPT; do
     case $OPT in
         c|+c)
@@ -6,6 +7,9 @@ while getopts :cs: OPT; do
             ;;
         s|+s)
             store_directory="$OPTARG"
+            ;;
+        p|+p)
+            player="$OPTARG"
             ;;
         *)
             echo "usage: ${0##*/} [-c][-s STORE_DIRECTORY] [--] PODCAST_FEED"
@@ -16,6 +20,7 @@ shift $(( OPTIND - 1 ))
 OPTIND=1
 
 podcast_feed=$1
+player=${player:-mpg123}
 random_enclosure=$(curl ${podcast_feed} |grep -i '<enclosure' |grep -Eo 'url="[^">]+' |cut -d '"' -f2|shuf|head -n 1)
 # 缓存mp3
 if [[ -n ${cached} ]];then
@@ -30,8 +35,8 @@ if [[ -n ${cached} ]];then
         wget ${random_enclosure}
     fi
     # 播放mp3文件
-    mpg123 ${enclosure_file}
+    $player "${enclosure_file}"
 else
     # 播放mp3 URL
-    curl ${random_enclosure}|mpg123 - # mpg123本身只支持http协议
+    curl ${random_enclosure}|$player - # mpg123本身只支持http协议
 fi
