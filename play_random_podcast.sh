@@ -16,7 +16,7 @@ shift $(( OPTIND - 1 ))
 OPTIND=1
 
 podcast_feed=$1
-random_enclosure=$(curl ${podcast_feed}|grep -i enclosure|grep -E -o "https*.*mp3" |shuf|head -n 1)
+random_enclosure=$(curl ${podcast_feed} |grep -i '<enclosure' |grep -Eo 'url="[^">]+' |cut -d '"' -f2|shuf|head -n 1)
 # 缓存mp3
 if [[ -n ${cached} ]];then
     podcast=$(echo ${podcast_feed}|sed 's#^https*://\([^/]*\).*$#\1#')
