@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-while getopts :cs: OPT; do
+while getopts :cs:p: OPT; do
     case $OPT in
         c|+c)
             cached="True"
@@ -12,7 +12,7 @@ while getopts :cs: OPT; do
             player="$OPTARG"
             ;;
         *)
-            echo "usage: ${0##*/} [-c][-s STORE_DIRECTORY] [--] PODCAST_FEED"
+            echo "usage: ${0##*/} [-c][-s STORE_DIRECTORY][-p PLAYER] [--] PODCAST_FEED"
             exit 2
     esac
 done
