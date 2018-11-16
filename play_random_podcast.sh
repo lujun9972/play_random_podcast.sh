@@ -21,7 +21,7 @@ OPTIND=1
 
 podcast_feed=$1
 player=${player:-mpg123}
-random_enclosure=$(curl ${podcast_feed} |grep -i '<enclosure' |grep -Eo 'url="[^">]+' |cut -d '"' -f2|shuf|head -n 1)
+random_enclosure=$(curl -L ${podcast_feed} |grep -i '<enclosure' |grep -Eo 'url="[^">]+' |cut -d '"' -f2|shuf|head -n 1)
 # 缓存mp3
 if [[ -n ${cached} ]];then
     podcast=$(echo ${podcast_feed}|sed 's#^https*://\([^/]*\).*$#\1#')
