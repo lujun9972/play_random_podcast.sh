@@ -38,5 +38,5 @@ if [[ -n ${cached} ]];then
     $player "${enclosure_file}"
 else
     # 播放mp3 URL
-    curl ${random_enclosure}|$player - # mpg123本身只支持http协议
+    curl -L ${random_enclosure}|$player - # mpg123本身只支持http协议
 fi
