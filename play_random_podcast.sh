@@ -30,7 +30,7 @@ if [[ -n ${cached} ]];then
     fi
     mkdir -p ${store_directory}
     cd ${store_directory}
-    enclosure_file=$(basename ${random_enclosure})
+    enclosure_file="$(echo ${enclosure_file}|md5sum|cut -d " " -f1).$(basename ${random_enclosure})"
     if [[ ! -f ${enclosure_file} ]];then
         wget ${random_enclosure} -O ${enclosure_file}
     fi
