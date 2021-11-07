@@ -21,22 +21,27 @@ OPTIND=1
 
 podcast_feed=$1
 player=${player:-mpg123}
-random_enclosure=$(curl -L ${podcast_feed} |grep -i '<enclosure' |grep -Eo 'url="[^">]+' |cut -d '"' -f2|shuf|head -n 1)
+random_item=$(curl -L ${podcast_feed} |hxselect -c 'item' -s "\0" |shuf -z|head -z -n 1)
+enclosure_url=$(echo "${random_item}" |hxselect -s "\n" 'enclosure::attr(url)' -c )
+title=$(echo "${random_item}" |hxselect -s "\n" 'title' -c |sed 's/<!\[CDATA\[//'|sed 's/]]>//')
+echo "enclosure=${enclosure_url}"
+echo "title=${title}"
 # 缓存mp3
 if [[ -n ${cached} ]];then
-    podcast=$(echo ${podcast_feed}|sed 's#^https*://\([^/]*\).*$#\1#')
     if [[ -z ${store_directory} ]];then
+	podcast=$(echo ${podcast_feed}|sed 's#^https*://\([^/]*\).*$#\1#')
         store_directory=$(dirname $0)/podcasts/${podcast}
     fi
     mkdir -p ${store_directory}
     cd ${store_directory}
-    enclosure_file="$(echo ${enclosure_file}|md5sum|cut -d " " -f1).$(basename ${random_enclosure})"
+    extension="${enclosure_url##*.}"
+    enclosure_file="${title}.${extension}"
     if [[ ! -f ${enclosure_file} ]];then
-        wget ${random_enclosure} -O ${enclosure_file}
+        wget ${enclosure_url} -O ${enclosure_file}
     fi
     # 播放mp3文件
     $player "${enclosure_file}"
 else
     # 播放mp3 URL
-    curl -L ${random_enclosure}|$player - # mpg123本身只支持http协议
+    curl -L ${enclosure_url}|$player - # mpg123本身只支持http协议
 fi
