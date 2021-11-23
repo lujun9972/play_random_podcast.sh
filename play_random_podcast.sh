@@ -37,7 +37,7 @@ if [[ -n ${cached} ]];then
     extension="${enclosure_url##*.}"
     enclosure_file="${title}.${extension}"
     if [[ ! -f ${enclosure_file} ]];then
-        wget ${enclosure_url} -O ${enclosure_file}
+        wget ${enclosure_url} -O "${enclosure_file}"
     fi
     # 播放mp3文件
     $player "${enclosure_file}"
